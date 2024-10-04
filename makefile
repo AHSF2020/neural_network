@@ -2,7 +2,7 @@
 TARGET = app
 
 # Source files used in the application.
-SOURCE_FILES := main.cpp
+SOURCE_FILES := main.cpp dense_layer.cpp
 
 # Include directories.
 INCLUDE_DIRS := include
