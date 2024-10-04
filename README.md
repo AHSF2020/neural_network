@@ -1,4 +1,4 @@
-# Dokumentation
+# Dokumentation för funktioner! 
 
 
   * `feedforward`: Beräknar nya utsignaler i hela lagret.
