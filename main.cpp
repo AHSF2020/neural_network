@@ -31,47 +31,28 @@ using namespace ml;
  ******************************************************************************/
 int main()
 {
-    // Defines network parameters and training sets.
-    constexpr std::size_t epochCount{1000U};
-    constexpr double learningRate{0.1};
-    const std::vector<std::vector<double>> inputSets{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    const std::vector<std::vector<double>> referenceSets{{0}, {1}, {1}, {0}};
+    const std::vector<std::vector<double>> input_sets{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    const std::vector<std::vector<double>> reference_sets{{0}, {1}, {1}, {0}};
 
     // Creates the dense layers.
-    dense_layer hiddenLayer{3U /*  noder */, 2U /*vikt*/, act_func::tanh};
-    dense_layer outputLayer{1U, 3U};
-    
+    dense_layer hidden_layer{3U /*  noder */, 2U /*vikt*/, act_func::tanh};
+    dense_layer output_layer{1U, 3U};
 
-    // Trains the dense layer network.
-    for (std::size_t i{}; i < epochCount; ++i)
-    {
-        for (std::size_t j{}; j < inputSets.size(); ++j)
-        {
-            // Performs feedforward.
-            hiddenLayer.feedforward(inputSets[j]);
-            outputLayer.feedforward(hiddenLayer.output());
+    dense_layer::train(hidden_layer, output_layer, input_sets, reference_sets, 1000, 0.1);
+    // dense_layer::print(hidden_layer, output_layer);
 
-            // Performs backpropagation.
-            outputLayer.backpropagate(referenceSets[j]);
-            hiddenLayer.backpropagate(outputLayer);
-
-            // Performs optimization.
-            hiddenLayer.optimize(inputSets[j], learningRate);
-            outputLayer.optimize(hiddenLayer.output(), learningRate);
-        }
-    }
-
+    // Kan du göra en print-funktion av nedanstående?
     // Prints the results in the terminal.
-    for (const auto& input : inputSets)
+    for (const auto& input : input_sets)
     {
         std::cout << "Input: ";
         utils::vector::print(input, std::cout, ", ");
 
-        hiddenLayer.feedforward(input);
-        outputLayer.feedforward(hiddenLayer.output());
+        hidden_layer.feedforward(input);
+        output_layer.feedforward(hidden_layer.output());
 
         std::cout << "output: ";
-        utils::vector::print(outputLayer.output());
+        utils::vector::print(output_layer.output());
     }
     return 0;
 }

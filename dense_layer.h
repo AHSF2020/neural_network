@@ -54,7 +54,11 @@ namespace ml
             void backpropagate(const dense_layer& next_layer); // Backpropagation för det dolda lagret (vi beräknar fel i lagret).
             
             void optimize(const std::vector<double>& input, const double learning_rate); // Justerar vikter och bias.
-
+            
+            static void train(dense_layer& hidden_layer, dense_layer& output_layer, 
+                              const std::vector<std::vector<double>>& input_sets,
+                              const std::vector<std::vector<double>>& reference_sets,
+                              std::size_t epoch_count, const double learning_rate = 0.01);
             //-----------END Getter-metoder ------------------
 
         private:
