@@ -59,6 +59,9 @@ namespace ml
                               const std::vector<std::vector<double>>& input_sets,
                               const std::vector<std::vector<double>>& reference_sets,
                               std::size_t epoch_count, const double learning_rate = 0.01);
+            
+            static void print(dense_layer& hidden_layer,dense_layer& output_layer, const std::vector<std::vector<double>>& input_sets,
+                                         const std::vector<std::vector<double>>& reference_sets); // print funktion
             //-----------END Getter-metoder ------------------
 
         private:

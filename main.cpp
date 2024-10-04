@@ -36,23 +36,9 @@ int main()
 
     // Creates the dense layers.
     dense_layer hidden_layer{3U /*  noder */, 2U /*vikt*/, act_func::tanh};
-    dense_layer output_layer{1U, 3U};
+    dense_layer output_layer{1U /* vikt */, 3U /* noder */};
 
-    dense_layer::train(hidden_layer, output_layer, input_sets, reference_sets, 1000, 0.1);
-    // dense_layer::print(hidden_layer, output_layer);
-
-    // Kan du göra en print-funktion av nedanstående?
-    // Prints the results in the terminal.
-    for (const auto& input : input_sets)
-    {
-        std::cout << "Input: ";
-        utils::vector::print(input, std::cout, ", ");
-
-        hidden_layer.feedforward(input);
-        output_layer.feedforward(hidden_layer.output());
-
-        std::cout << "output: ";
-        utils::vector::print(output_layer.output());
-    }
-    return 0;
+    dense_layer::train(hidden_layer, output_layer, input_sets, reference_sets, 1000 /*epocher */, 0.1 /*learningRate*/);
+    
+    dense_layer::print(hidden_layer, output_layer, input_sets, reference_sets);
 }

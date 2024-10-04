@@ -46,6 +46,8 @@ const std::vector<double>& dense_layer::error() const { return myError; }
 
 const std::vector<double>& dense_layer::output() const { return myOutput; }
 
+
+
 //----------getter-----------------------
 
 
@@ -120,7 +122,7 @@ void dense_layer::optimize(const std::vector<double>& input, const double learni
 void dense_layer::train(dense_layer& hidden_layer, dense_layer& output_layer, 
             const std::vector<std::vector<double>>& input_sets,
             const std::vector<std::vector<double>>& reference_sets,
-        std::size_t epoch_count, const double learning_rate ) // Trains the dense layer network.
+            std::size_t epoch_count, const double learning_rate ) // Trains the dense layer network.
     {    
         for (std::size_t i{}; i < epoch_count; ++i)
         {
@@ -140,7 +142,22 @@ void dense_layer::train(dense_layer& hidden_layer, dense_layer& output_layer,
             }
         }
     }
+    
+void dense_layer::print(dense_layer& hidden_layer,dense_layer& output_layer, const std::vector<std::vector<double>>& input_sets,
+                                         const std::vector<std::vector<double>>& reference_sets)
+{
+    for (const auto& input : input_sets)
+    {
+        std::cout << "Input: ";
+        utils::vector::print(input, std::cout, ", ");
 
+        hidden_layer.feedforward(input);
+        output_layer.feedforward(hidden_layer.output());
+
+        std::cout << "output: ";
+        utils::vector::print(output_layer.output());
+    }
+}
 // -----------------------------------------------------------------------------
 double dense_layer::act_func_output(const double number) const
 {
