@@ -6,6 +6,7 @@
 
 #include "dense_layer.h"
 #include "utils.h"
+#include "neural_network.h"
 
 using namespace ml;
 
