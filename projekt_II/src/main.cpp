@@ -3,15 +3,16 @@
  ******************************************************************************/
 #include <iostream>
 #include <vector>
-
+#include "dense_layer.h"
 #include "button.h"
 #include "led.h"
-#include "neural_network.h"
+#include "utils.h"
 
-// #define ENABLE_DRIVERS
+#define ENABLE_DRIVERS
 
 using namespace ml;
 using namespace rpi;
+using namespace utils;
 
 /*******************************************************************************
  * @brief Creates and initializes a dense layer network, which is trained to 
@@ -33,39 +34,57 @@ using namespace rpi;
  * 
  * @return Success code 0 upon termination of the program.
  ******************************************************************************/
+
 int main()
 {
-    const std::vector<std::vector<double>> input_sets{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    const std::vector<std::vector<double>> reference_sets{{0}, {1}, {1}, {0}};
+    // XOR-träningsdata (4-bitars XOR-mönster)
+    const std::vector<std::vector<double>> input_sets{
+        {0, 0, 0, 0}, {0, 0, 0, 1}, {0, 0, 1, 0}, {0, 0, 1, 1},
+        {0, 1, 0, 0}, {0, 1, 0, 1}, {0, 1, 1, 0}, {0, 1, 1, 1},
+        {1, 0, 0, 0}, {1, 0, 0, 1}, {1, 0, 1, 0}, {1, 0, 1, 1},
+        {1, 1, 0, 0}, {1, 1, 0, 1}, {1, 1, 1, 0}, {1, 1, 1, 1}
+    };
+
+    // Referenssätt för XOR (om summan är udda, sätt 1, annars 0)
+    const std::vector<std::vector<double>> reference_sets{
+        {0}, {1}, {1}, {0},
+        {1}, {0}, {0}, {1},
+        {1}, {0}, {0}, {1},
+        {0}, {1}, {1}, {0}
+    };
 
     // Creates the dense layers.
-    dense_layer hidden_layer{3U /*  noder */, 2U /*vikt*/, act_func::tanh};
-    dense_layer output_layer{1U /* vikt */, 3U /* noder */};
+    dense_layer hidden_layer{4U /*  noder */, 4U /*vikt*/, act_func::tanh};
+    dense_layer output_layer{1U /* vikt */, 4U /* noder */, act_func::relu};
 
-    dense_layer::train(hidden_layer, output_layer, input_sets, reference_sets, 1000 /*epocher */, 0.1 /*learningRate*/);
+    dense_layer::train(hidden_layer, output_layer, input_sets, reference_sets, 100000 /*epocher */, 0.01 /*learningRate*/);
     
     dense_layer::print(hidden_layer, output_layer, input_sets, reference_sets);
 
     #ifdef ENABLE_DRIVERS
-        Led led1{17};
-        // Hårdvarukod.
+
+    Button button1(23), button2(17), button3(27), button4(22);
+
+        // Definiera GPIO-pinnar (ändra vid behov)
+        std::vector<Button*> buttons = {
+            &button1, &button2, &button3, &button4  // 4 tryckknappar för G-nivå
+        };
+
+    while(true) {
+
+    std::vector<double> input(buttons.size(), 0.0);
+        for(std::size_t i {}; i < buttons.size(); i++) {
+
+            if(buttons[i]->isPressed()) {
+               input[i] = 1;
+            }
+        }
+
+        std::cout << "Input from buttons: ";
+        vector::print(input);
+
+        Led led(18);  // Lysdiod på GPIO 18
     #endif
-    
+	}
 
 }
-
-
-    /*
-{
-    rpi::Led led1{17};
-    rpi::Button button1{27};
-    
-    while (1)
-    {
-        if (button1.isEventDetected())
-        {
-            led1.toggle();
-        }
-    }
-    return 0;
-} */
