@@ -1,12 +1,5 @@
-# Dokumentation för funktioner! 
+# Neurala nätverk.
 
-
-  * `feedforward`: Beräknar nya utsignaler i hela lagret.
-  * `backpropagate`: Backpropagation för output-lager (vi beräknar fel i lagret).
-  * `backpropagate`:  Backpropagation för det dolda lagret (vi beräknar fel i lagret).
-  * `optimize`:  Justerar vikter och bias.
-  *  `train`: Träningsmodell för maskininlärningen
-  *  `print`: Print funktion för att se värden i terminalen. 
-
-##  Övrigt
-* `kommande funktioner`: Jag kommer dock behöva en randomize funktion inför optimeringen. 
+Neurala nätverk för olika applikationer:
+* I [`reference`](./reference/) finns exempelkod för ett neural nätverk.
+* I [`projekt_II`](./projekt_II/) utgör projekt 2, vilket innefattar ett neuralt nätverk, drivers etc.
