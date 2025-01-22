@@ -19,7 +19,7 @@ using namespace utils;
 /******************************************************************************* 
  * @brief Creates and initializes a dense layer network, which is trained to 
  *        detect a 4-bit XOR pattern. 
- ******************************************************************************/ 
+ ******************************************************************************/
 
 int main()
 {
@@ -52,10 +52,11 @@ int main()
         &button1, &button2, &button3, &button4
     };
 
+    Led led(18); // Lysdiod på GPIO 18 deklareras utanför loopen
+
     while (true) {
         std::vector<double> input(buttons.size(), 0.0);
         int press_count = 0; // Räknar antalet knapptryck
-
 
         for (std::size_t i {}; i < buttons.size(); i++) {
             if (buttons[i]->isPressed()) {
@@ -67,18 +68,15 @@ int main()
         std::cout << "Input from buttons: ";
         vector::print(input);
 
+        // Kontrollera om antalet knapptryck är udda
         if (press_count % 2 != 0) {
-            led.on(); // Tänd lysdioden
-            } 
-        else {
-            led.off(); // Släck lysdioden
+            led.write(true); // Tänd lysdioden
+        } else {
+            led.write(false); // Släck lysdioden
         }
-
 
         // Delay på 1 sekund efter varje utskrift
         std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        Led led(18); // Lysdiod på GPIO 18
     }
     #endif
 }
