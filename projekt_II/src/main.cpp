@@ -54,14 +54,26 @@ int main()
 
     while (true) {
         std::vector<double> input(buttons.size(), 0.0);
+        int press_count = 0; // Räknar antalet knapptryck
+
+
         for (std::size_t i {}; i < buttons.size(); i++) {
             if (buttons[i]->isPressed()) {
                 input[i] = 1;
+                press_count++;
             }
         }
 
         std::cout << "Input from buttons: ";
         vector::print(input);
+
+        if (press_count % 2 != 0) {
+            led.on(); // Tänd lysdioden
+            } 
+        else {
+            led.off(); // Släck lysdioden
+        }
+
 
         // Delay på 1 sekund efter varje utskrift
         std::this_thread::sleep_for(std::chrono::seconds(1));
