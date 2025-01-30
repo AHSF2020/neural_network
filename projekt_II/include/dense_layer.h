@@ -1,3 +1,14 @@
+/**
+ * @note The implementation looks good! In this file, you're using snake_case instead of camelCase.
+ *       I would try to stick to one style in a given code base, but usually you have to
+ *       dead with different styles either way (for instance, the entire standard library is
+ *       written in snake_case). So it's fine!
+ * 
+ * @remark In this file you've implemented enum act_func, while in the NeuralNetwork class, 
+ *         you're using enum ActFunc (from act_func.h). Please stick to one of them. :)
+ * 
+ *         Also, try not to mix Swedish and English comments. 
+ */
 #pragma once
 #include <iostream>
 #include <vector>

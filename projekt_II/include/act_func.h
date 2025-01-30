@@ -1,3 +1,7 @@
+/**
+ * @remark This file is not used in the implementation and can therefore be removed.
+ */
+
 /*******************************************************************************
  * @brief Implementation of activation functions for neural networks.
  ******************************************************************************/

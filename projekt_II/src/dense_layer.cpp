@@ -1,3 +1,8 @@
+/**
+ * @note Great! The code looks good overall.
+ * 
+ * @remark Try not to mix Swedish and English comments. Preferably use English.
+ */
 #include <iostream>
 #include <vector>
 
