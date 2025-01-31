@@ -1,3 +1,7 @@
+/**
+ * @remark The code looks really good, but this file is not used in the implementation
+ *         and can therefore be removed.
+ */
 #include "neural_network.h"
 #include "utils.h"
 

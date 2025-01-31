@@ -1,3 +1,10 @@
+/**
+ * @remark The code looks really good. However, this file is not used in the implementation
+ *         and can therefore be removed.
+ * 
+ *         If you decide to keep this file, consider removing the code segment at the bottom.
+ */
+
 /**************************************************
  * @brief Neural network implementation
  ***********************************************/
@@ -126,6 +133,7 @@ class NeuralNetwork
 
 } //end namespace ml
 
+/** @remark Consider removing the example code segment below. */
 #if 0
 NeuralNetwork network{2, 3, 1, ActFunc::Tanh } // två ingångar, 3 dolda noder och 1 utgång
 
