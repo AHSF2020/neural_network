@@ -1,33 +1,11 @@
-/**
- * @note The neural network is trained correctly and predicts with 100 % accuracy.
- * 
- *       The code is very clear and easy to follow. You've named variables, 
- *       methods and classes wisely.
- * 
- * @remark The system works as intended, i.e. the LED is enabled for odd numbers of high inputs.
- *         But the neural network isn't used for the prediction. The input signals from the
- *         buttons are supposed to be used as inputs for the neural network, which is supposed
- *         to make a prediction, i.e. you run a feedforward to generate new output values.
- * 
- *         The output of the neural network is then supposed to set the value of the LED.
- *         To solve this, see the segment marked SUGGESTED_SOLUTION below.
- *         Feel free to use it.
- * 
- *         The files `act_func.h`, `neural_network.h`, and `neural_network.cpp` can be removed,
- *         since they're not used in this implementation.
- * 
- *         Some comment blocks are out of date and need to be updated.
- *         Your inline comments are great, but please translate them into English.      
- */
-
-/** @remark Please update this comment. */
-/******************************************************************************* 
- * @brief Demonstration of a dense layer network. 
+/*******************************************************************************
+ * @brief Trains a dense-layer network to predict the parity of four button
+ *        inputs and uses its prediction to control an LED.
  ******************************************************************************/
 #include <iostream>
 #include <vector>
-#include <thread> // För delay
-#include <chrono> // För tidsenhet
+#include <thread>
+#include <chrono>
 #include "dense_layer.h"
 #include "button.h"
 #include "led.h"
@@ -38,15 +16,6 @@
 using namespace ml;
 using namespace rpi;
 using namespace utils;
-
-/** 
- * @remark Please add a comment about the buttons being connected to the network, i.e. the buttons 
- *         being connected to the input and the LED being connected to the output. 
- */
-/******************************************************************************* 
- * @brief Creates and initializes a dense layer network, which is trained to 
- *        detect a 4-bit XOR pattern. 
- ******************************************************************************/
 
 int main()
 {
@@ -79,45 +48,27 @@ int main()
         &button1, &button2, &button3, &button4
     };
 
-    Led led(18); // Lysdiod på GPIO 18 deklareras utanför loopen
+    Led led(18);
 
     while (true) {
         std::vector<double> input(buttons.size(), 0.0);
-        int press_count = 0; // Räknar antalet knapptryck
 
         for (std::size_t i {}; i < buttons.size(); i++) {
             if (buttons[i]->isPressed()) {
                 input[i] = 1;
-                press_count++;
             }
         }
 
         std::cout << "Input from buttons: ";
         vector::print(input);
 
-        /** @note Suggested solution to predict with the values from the buttons: */
-        #ifdef SUGGESTED_SOLUTION
+        hidden_layer.feedforward(input);
+        output_layer.feedforward(hidden_layer.output());
 
-            // Perform feedforward to generate new output.
-            hidden_layer.feedforward(input);
-            output_layer.feedforward(hidden_layer.output());
+        const bool output{output_layer.output()[0U] >= 0.5};
+        led.write(output);
 
-            // Get new output value rounded to nearest integer.
-            const auto output{static_cast<int>(output_layer.output()[0U] + 0.5)};
-
-            // Set new value for the LED.
-            led.write(output);
-
-        #else
-            // Kontrollera om antalet knapptryck är udda
-            if (press_count % 2 != 0) {
-                led.write(true); // Tänd lysdioden
-            } else {
-                led.write(false); // Släck lysdioden
-            }
-        #endif 
-
-        // Delay på 1 sekund efter varje utskrift
+        // Wait one second before reading the buttons again.
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     #endif
